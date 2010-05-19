@@ -21,4 +21,5 @@
 (deftest http-get-basic-headers
     (is (= "Apache" (get (:headers req) "Server" ))))
 
-
+(deftest http-get-redirection
+    (is (= "http://manifesto.blog.br/1.5/" (:url req))))

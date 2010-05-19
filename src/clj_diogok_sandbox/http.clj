@@ -10,11 +10,15 @@
 
 (defn http-get [url]
   "Get the URL content and headers"
-  (let [conn (http-connection url)
-        content (future (io/slurp* (.getInputStream conn))) ]
-    {:headers (treat-headers (.getHeaderFields conn) )
-     :response-code (.getResponseCode conn)
-     :response-message (.getResponseMessage conn)
-     :content @content}
+  (let [conn (http-connection url)]
+    (.setInstanceFollowRedirects conn false)
+    (let [next-url (get (treat-headers (.getHeaderFields conn)) "Location")]
+      (if-not (nil? next-url) (recur next-url)
+        {:url (.toString (.getURL conn))
+         :headers (treat-headers (.getHeaderFields conn) )
+         :response-code (.getResponseCode conn)
+         :response-message (.getResponseMessage conn)
+         :content (io/slurp* (.getInputStream conn))}
+      ))
   ))
 
