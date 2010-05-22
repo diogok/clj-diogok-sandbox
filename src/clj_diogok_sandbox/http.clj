@@ -12,13 +12,17 @@
   "Get the URL content and headers"
   (let [conn (http-connection url)]
     (.setInstanceFollowRedirects conn false)
-    (let [next-url (get (treat-headers (.getHeaderFields conn)) "Location")]
-      (if-not (nil? next-url) (recur next-url)
-        {:url (.toString (.getURL conn))
-         :headers (treat-headers (.getHeaderFields conn) )
-         :response-code (.getResponseCode conn)
-         :response-message (.getResponseMessage conn)
-         :content (io/slurp* (.getInputStream conn))}
+    (try 
+      (let [next-url (get (treat-headers (.getHeaderFields conn)) "Location")]
+        (if-not (nil? next-url) (recur next-url)
+          {:url (.toString (.getURL conn))
+           :headers (treat-headers (.getHeaderFields conn) )
+           :response-code (.getResponseCode conn)
+           :response-message (.getResponseMessage conn)
+           :content (io/slurp* (.getInputStream conn))}
       ))
+      (catch Exception e 
+        {:url url :headers [] :response-code 400 :response-message "" :content ""})
+    ) 
   ))
 

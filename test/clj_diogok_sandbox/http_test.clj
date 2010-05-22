@@ -23,3 +23,8 @@
 
 (deftest http-get-redirection
     (is (= "http://manifesto.blog.br/1.5/" (:url req))))
+
+(def req-fail (http-get "http://www.google.com/lol"))
+
+(deftest http-get-fail-content
+         (is (= 400 (:response-code req-fail))))
