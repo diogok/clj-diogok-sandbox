@@ -32,12 +32,22 @@
          (unserialize "#=(clojure.lang.PersistentArrayMap/create {:key \"value\", \"key\" [#=(clojure.lang.PersistentArrayMap/create {:foo \"bar\"}) 2 3], \"name\" \"foo\"})")
          )))
 
-(.delete (java.io.File. "test.txt"))
+(deftest make-file-test
+    (let [file (mk-file "test-me.txt")]
+      (is (.exists file))
+      (.deleteOnExit file)))
+
+(deftest make-file-test-parents
+    (let [file (mk-file "hello/test-me.txt")]
+      (is (.exists file))
+      (.deleteOnExit file)
+      (.deleteOnExit (java.io.File. "hello/"))))
+
 (deftest save-load-file
          (let [obj {:key "value", "key" [{:foo "bar"} 2 3] , "name" "foo"}]
+           (.delete (java.io.File. "test.txt"))
            (save-to-file obj "test.txt")
            (let [loaded (load-from-file "test.txt")]
-             (is (= obj loaded))
-           )))
-(.deleteOnExit (java.io.File. "test.txt"))
-
+             (is (= obj loaded)))
+           (.deleteOnExit (java.io.File. "test.txt"))
+         ))
