@@ -41,6 +41,12 @@
       (is (.exists file))
       (.deleteOnExit file)))
 
+(deftest make-file-of-file-test
+    (let [f1 (java.io.File. "test-me2.txt")
+          file (mk-file f1)]
+      (is (.exists file))
+      (.deleteOnExit file)))
+
 (deftest make-file-test-parents
     (let [file (mk-file "hello/test-me.txt")]
       (is (.exists file))

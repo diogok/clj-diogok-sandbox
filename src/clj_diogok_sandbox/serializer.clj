@@ -17,7 +17,7 @@
 
 (defn mk-file [path]
   "Returns a File, creating it and it's path if needed"
-  (let [file (.getAbsoluteFile (io/file-str path))]
+  (let [file (.getAbsoluteFile (if (string? path) (io/file-str path) path )) ]
     (if-not (.exists (.getParentFile file)) (io/make-parents file))
     (if-not (.exists file) (.createNewFile file))
     file
