@@ -9,6 +9,12 @@
   "Unserialize and object from a string"
   (with-in-str string (read)))
 
+(defn md5 [obj]
+  "Calculate md5sum of object"
+  (let [bytes (.getBytes (serialize obj))] 
+    (.toString (new java.math.BigInteger 1
+      (.digest (java.security.MessageDigest/getInstance "MD5") bytes)) 16)))
+
 (defn mk-file [path]
   "Returns a File, creating it and it's path if needed"
   (let [file (.getAbsoluteFile (io/file-str path))]
