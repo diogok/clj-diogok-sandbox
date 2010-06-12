@@ -32,3 +32,14 @@
 (defn load-from-file [path]
   "Unserialize file to obj"
   (unserialize (io/slurp* (mk-file path))))
+
+(defn partial-read [file start length]
+  "Read part of the file, tricky."
+  (let [stream (java.io.FileInputStream. file)
+        buffer (make-array Byte/TYPE length)]
+     (try (do (.skip stream start) (.read stream buffer))
+       (catch Exception e (.printStackTrace e))
+       (finally (.close stream)))
+    (io/slurp* (java.io.ByteArrayInputStream. buffer))
+   ))
+

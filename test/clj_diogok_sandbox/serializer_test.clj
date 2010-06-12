@@ -64,3 +64,12 @@
              (is (= obj loaded)))
            (.deleteOnExit (java.io.File. "test.txt"))
          ))
+
+(deftest read-part
+         (let [file (java.io.File. "test-content.db")]
+           (io/spit file "foobar")
+           (is (= "foobar" (partial-read (.getAbsolutePath file) 0 6)))
+           (is (= "fooba" (partial-read (.getAbsolutePath file) 0 5)))
+           (is (= "ob" (partial-read (.getAbsolutePath file) 2 2)))
+           (.deleteOnExit file)
+         ))
