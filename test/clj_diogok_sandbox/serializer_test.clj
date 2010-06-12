@@ -24,6 +24,9 @@
    (is (= "#=(clojure.lang.PersistentArrayMap/create {:key \"value\", \"key\" [#=(clojure.lang.PersistentArrayMap/create {:foo \"bar\"}) 2 3], \"name\" \"foo\"})"
           (serialize {:key "value", "key" [{:foo "bar"} 2 3] , "name" "foo"}))))
 
+(deftest unserialize-nothing
+   (is (= nil (unserialize ""))))
+
 (deftest unserialize-string
    (is (= "foo" (unserialize "\"foo\""))))
 

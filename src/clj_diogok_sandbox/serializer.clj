@@ -7,7 +7,8 @@
 
 (defn unserialize [string]
   "Unserialize and object from a string"
-  (with-in-str string (read)))
+  (if (= "" string) nil
+    (with-in-str string (read))))
 
 (defn md5 [obj]
   "Calculate md5sum of object"
