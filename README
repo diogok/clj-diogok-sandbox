@@ -1,14 +1,33 @@
 # clj-utils
 
-This is my clojure scripts and namespaces utils and sandbox.
+This is my clojure scripts and namespaces utils and sandbox. Includes utilities for:
+- http-get a resource
+- Serialization/unserialization of objetcs
+- Serialization/unserialization of objetcs to/from file
+- md5sum (for hashing)
+- file creation (return a file and create it and its parents dirs if needed)
+- read only part of a file
 
 ## Usage
 
-FIXME: write
+HTTP:
 
-## Installation
+(let [response (http-get "http://github.com")]
+ (if (= (:response-code response) 200)
+  (println (:content response))
+ ))
+; contains :url :header :response-code :response-message and :content
 
-FIXME: write
+SERIALIZATION:
+
+(let [obj {:name "Diogok" :value ["diogok@diogok.net" "manifesto@manifesto.blog.br"]}]
+ (def serial (serialize obj))
+ (= obj (unserialize serial));true
+ (let [file (str (md5 (:name obj)) ".txt")]
+     (save-to-file obj file)
+     (= (load-from-file file) obj);true
+ )
+)
 
 ## License
 
