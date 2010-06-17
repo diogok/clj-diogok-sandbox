@@ -7,6 +7,7 @@ This is my clojure scripts and namespaces utils and sandbox. Includes utilities 
 - md5sum (for hashing)
 - file creation (return a file and create it and its parents dirs if needed)
 - read only part of a file
+- Key/Value tuple in file storage (fragile)  
 
 ## Usage
 
@@ -29,6 +30,12 @@ SERIALIZATION:
  )
 )
 
-## License
+STORAGE:
 
-
+(let [db (bucket "foo/bar")]
+ (put! db "diogok" {:name "Diogo Souza da Silva" :github "http://github.com/diogok"})
+ (let [obj (tuple "foo" "bar")]
+  (put! db obj)
+  (= obj (get! db "foo")); true
+ )
+)
