@@ -16,6 +16,9 @@
     (.toString (new java.math.BigInteger 1
       (.digest (java.security.MessageDigest/getInstance "MD5") bytes)) 16)))
 
+(defn sha1 [obj] (.toString (new java.math.BigInteger 1
+      (.digest (java.security.MessageDigest/getInstance "SHA1") (.getBytes (serialize obj)))) 16))
+
 (defn mk-file [path]
   "Returns a File, creating it and it's path if needed"
   (let [file (.getAbsoluteFile (if (string? path) (io/file-str path) path )) ]

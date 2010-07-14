@@ -3,9 +3,11 @@
   (:require [clojure.contrib.duck-streams :as io])
   (:use [clojure.test]))
 
-; foo -> dba520e335c06ba9240a978e9455878
 (deftest md5-foo
-         (is (= "dba520e335c06ba9240a978e9455878") (md5 "foo")))
+         (is (= "dba520e335c06ba9240a978e9455878" (md5 "foo"))))
+
+(deftest sha1-foo
+         (is (= "d465e627f9946f2fa0d2dc0fc04e5385bc6cd46d" (sha1 "foo"))))
 
 (deftest serialize-string
    (is (= "\"foo\"" (serialize "foo"))))
