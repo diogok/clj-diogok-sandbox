@@ -25,7 +25,8 @@
      "Perform a PUT/POST on the url, 
        sending a json and reading the response. 
       Return false on failure"
-     (let [conn (doto (connect url) (.setDoOutput true) 
+     (let [conn (doto (connect (str url (when (vector? (object :docs)) "/_bulk_docs")))
+                 (.setDoOutput true) 
                  (.setRequestProperty "Content-Type" "application/json"))]
       (try (with-open [out (.getOutputStream conn)]
         (do
